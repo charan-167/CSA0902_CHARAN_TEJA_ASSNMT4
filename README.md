@@ -3,8 +3,8 @@
 
 **Course:** Programming in Java (CSA09)  
 **Course Outcome:** CO4 – Applets, Event Delegation Model, Listeners and Adapters, Inner and Anonymous Classes, AWT/Swing Components, Layout Managers, Menus/Dialogs, and GUI–JDBC Integration  
-**Student Name:** Kola Charan  
-**Register Number:** [Enter Your Register Number Here]  
+**Student Name:** Kola VENKATA Charan  Tejs
+**Register Number:** [192424167]  
 **Java Version:** OpenJDK 17.0.21 (LTS)  
 **Repository Name:** `CSA09-<RegisterNumber>-Assignment4`  
 
