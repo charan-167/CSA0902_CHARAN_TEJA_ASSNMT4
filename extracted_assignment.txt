@@ -1,0 +1,271 @@
+PROGRAMMING IN JAVA
+ASSIGNMENT 4 – CO4
+EVENT-DRIVEN GUI DESIGN
+Course: Programming in Java (CSA09)Course Outcome: CO4 – Applets, the event delegation model, listeners and adapter classes, inner and anonymous classes, AWT components and controls, layout managers, menus and dialogs, Swing components and GUI–JDBC integration (Sessions 49–56)Nature of Assignment: IndividualDuration: One WeekTotal Marks: 50Submission Date: __________________
+Bloom’s Levels Assessed: K4 – Analyse and K5 – Evaluate (the level of each task is stated under the task heading)
+Mandatory Execution and GitHub Submission
+Every student must individually execute every task in this assignment, including all “Complete the Code” programs.
+Create a GitHub repository named CSA09-<RegisterNumber>-Assignment4 and share it with the course faculty (public, or private with the faculty added as a collaborator).
+Keep one folder for each task (for example: Task01, Task02 … or Q1, Q2 …), containing the Java source code, input files and output screenshots.
+Include a README.md with your name, register number, Java version, the steps to compile and run each program, and a short note of the result of each task.
+Commit your work progressively – at least one commit for each task. The commit history will be checked; a single upload of all files on the last day will not be accepted.
+Submit the GitHub link below and on the cover page of your report. An assignment submitted without a working GitHub link will not be evaluated.
+GitHub Repository Link: __________________________________________________
+How to Answer the Additional Questions
+Complete the Code: Copy the given code into your repository, replace every TODO with working code without changing the rest of the program, execute it and compare your output with the expected output.
+Alternative Concept and Complexity Analysis: Describe how the solution would change if the alternative concept were used, with code or pseudocode, and analyse and compare the time complexity and space complexity of both solutions using Big-O notation, supported by your own measurements wherever possible.
+PURPOSE OF THE ASSIGNMENT
+This assignment evaluates your ability to design an event-driven user interface before building it, and to keep the interface separate from the application logic.
+You are expected to demonstrate the following progression:
+Interpret the Requirement → Identify Components and Events → Design the Layout → Design the Handlers → Implement → Trace → Challenge → Refine
+Where pseudocode is required, it must follow the SIMATS Engineering – Standard for Algorithmic Pseudocode. Implementation must use AWT and/or Swing.
+TASK 1 – GUI DESIGN REVIEW
+Bloom’s Level: K4 – Analyse
+Diagnose and Repair a Poor Event-Handling Design
+6 Marks
+A junior developer has built a student fee-payment window. Every button is handled by the same listener, and the complete program logic is written inside it.
+public class FeeWindow extends Frame implements ActionListener {
+  TextField regNo = new TextField(); TextField amount = new TextField();
+  Button pay = new Button("Pay"), clear = new Button("Clear"), receipt = new Button("Receipt");
+  public void actionPerformed(ActionEvent e) {
+    if (e.getActionCommand() == "Pay") {
+      double a = Double.parseDouble(amount.getText());
+      Connection c = DriverManager.getConnection(URL, USER, PWD);
+      c.createStatement().executeUpdate("INSERT INTO fees VALUES('" + regNo.getText() + "'," + a + ")");
+      Thread.sleep(3000);          // wait for bank confirmation
+      System.out.println("Paid");
+    } else { regNo.setText(""); amount.setText(""); }
+  }
+}
+Task 1.1 – Diagnose the Design | 2 Marks
+Identify at least five design deficiencies in this code. Do not focus merely on syntax. Examine aspects such as:
+Separation of interface and logic
+String comparison of the action command
+Handling of invalid or empty input
+Database work performed on the event-dispatch thread and the effect of sleep() on the window
+Feedback to the user
+The Receipt button
+Security of the SQL statement
+Closing of the window and of the database connection
+Checked exceptions that are not handled
+For each deficiency, explain briefly what the user would experience or what could go wrong.
+Task 1.2 – Repair the Design | 3 Marks
+Redesign the program so that the window only collects input and shows results, and a separate FeeService class performs validation and payment. Present the class structure and rewrite the event handling.
+Task 1.3 – Design Defence | 1 Mark
+In not more than 100 words, explain why your redesign is easier to test and maintain.
+Alternative Concept and Complexity Analysis
+If, instead of one listener with an if–else chain on the action command, each button had its own listener object (or a Swing Action), what would the solution be? Analyse the time to dispatch an event for k buttons (up to k comparisons versus O(1)) and the space used by k listener objects.
+Evidence Expected
+A reasoned diagnosis, a corrected design and a concise justification.
+TASK 2 – FROM REQUIREMENT TO EVENT-DRIVEN DESIGN
+Bloom’s Level: K4 – Analyse
+Hospital Outpatient Appointment Desk
+8 Marks
+The outpatient desk needs a window in which the receptionist enters a patient ID, selects a department from a list, chooses a doctor (the doctors shown depend on the department), picks a time slot and books the appointment. The window must show a confirmation or an error, and must ask for confirmation before closing if a booking is in progress.
+Task 2.1 – Model the Events | 2 Marks
+Prepare a table listing each event source, the event object generated, the listener interface and the action taken.
+Task 2.2 – Design the Component Hierarchy | 2 Marks
+Draw the containment tree of frames, panels and components, and name the AWT/Swing class used for each.
+Task 2.3 – Design the Handler Logic | 3 Marks
+Write pseudocode for (a) refreshing the doctor list when the department changes, and (b) validating and booking the appointment.
+Task 2.4 – Trace the Event Sequence | 1 Mark
+Trace the order of method calls from the moment the window is opened to the moment it is closed, including the window-event methods. Compare this briefly with the life-cycle methods of an applet (init, start, paint, stop, destroy).
+Alternative Concept and Complexity Analysis
+If the doctor list were fetched from the database every time the department changes, instead of being loaded once into a Map<String, List<Doctor>>, what would the solution be? Analyse the time per department change and the memory used for d departments and m doctors in each approach.
+Evidence Expected
+An event table, a component hierarchy, handler pseudocode and a correct event trace.
+TASK 3 – FROM SKETCH TO LAYOUT
+Bloom’s Level: K4 – Analyse
+Campus Library Search Screen
+9 Marks
+The library search screen has: a title bar at the top; a search row with a text field, a category Choice and a Search button; a results area in the centre; a row of Prev, Next and Reserve buttons at the bottom; and a status message. When the window is resized, the results area must grow while the search row and buttons keep their size.
+Task 3.1 – Choose the Layout Managers | 3 Marks
+Select layout managers (FlowLayout, BorderLayout, GridLayout, CardLayout) for each container and justify each choice with respect to the resizing requirement.
+Task 3.2 – Design the Nested Containers | 2 Marks
+Draw the nested panel structure showing which layout manager each panel uses.
+Task 3.3 – Implement the Screen | 3 Marks
+Implement the screen in AWT or Swing.
+Task 3.4 – Test the Resizing Behaviour | 1 Mark
+Provide screenshots at three window sizes and explain whether each region behaved as designed.
+Alternative Concept and Complexity Analysis
+If GridBagLayout or absolute positioning (setLayout(null) with setBounds) were used instead of nested BorderLayout and FlowLayout panels, what would the solution be? Compare the resizing behaviour and analyse the layout computation time and the number of container objects (space) in each design.
+Evidence Expected
+Justified layout choices, a nested container diagram, working code and resizing evidence.
+TASK 4 – EVENT-HANDLING FORENSICS
+Bloom’s Level: K4 – Analyse
+7 Marks
+A drawing pad is supposed to draw a dot wherever the user clicks and show the click count in a label. Users report that nothing is drawn and the count stays at 0.
+public class DrawPad extends Frame {
+  int count = 0; Label status = new Label("Clicks: 0");
+  public DrawPad() {
+    add(status, BorderLayout.SOUTH);
+    addMouseListener(new MouseAdapter() {
+      public void mouseclicked(MouseEvent e) {
+        count++;
+        Graphics g = getGraphics(); g.fillOval(e.getX(), e.getY(), 6, 6);
+      }
+    });
+    setSize(400, 300); setVisible(true);
+  }
+}
+Task 4.1 – Locate the Defect | 2 Marks
+Identify why the click is never handled and why the label never changes.
+Task 4.2 – Construct a Failing Interaction | 2 Marks
+Even after the first defect is fixed, the dots disappear when the window is minimised and restored. Describe the interaction that reveals this and explain why it happens.
+Task 4.3 – Repair the Program | 2 Marks
+Correct the program so that clicks are counted, the label updates and the dots survive repainting (store the points and draw them in paint()).
+Task 4.4 – Prevent Recurrence | 1 Mark
+Explain how the @Override annotation would have exposed the first defect at compile time.
+Complete the Code
+Complete TODO 1 and TODO 2 below, execute the program and attach screenshots before and after minimising the window.
+import java.awt.BorderLayout;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Label;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
+public class DrawPad extends Frame {
+    private final List<Point> points = new ArrayList<>();
+    private final Label status = new Label("Clicks: 0");
+    public DrawPad() {
+        super("Draw Pad");
+        add(status, BorderLayout.SOUTH);
+        addMouseListener(new MouseAdapter() {
+            // TODO 1: Override mouseClicked correctly: store the point, update the
+            //   label and request a repaint
+            
+        });
+        addWindowListener(new WindowAdapter() {
+            @Override public void windowClosing(WindowEvent e) { dispose(); }
+        });
+        setSize(400, 300);
+    }
+    @Override public void paint(Graphics g) {
+        // TODO 2: Draw every stored point as a 6 × 6 filled circle centred on the point
+        
+    }
+    public static void main(String[] args) { new DrawPad().setVisible(true); }
+}
+Remove @Override from TODO 1, misspell the method as mouseclicked, and record the compiler message.
+Alternative Concept and Complexity Analysis
+Your repaired design stores the points and redraws them in paint(). If the dots were instead drawn once onto an off-screen BufferedImage that is copied to the screen in paint(), what would the solution be? Analyse the time per repaint for n clicks (O(n) versus copying one image) and the space used (O(n) points versus width × height pixels).
+Evidence Expected
+Correct defect identification, a reproducible failing interaction, a repaired program and a prevention measure.
+TASK 5 – SAME SCREEN, DIFFERENT EVENT-HANDLING STYLES
+Bloom’s Level: K5 – Evaluate
+7 Marks
+A simple currency-converter window has an amount field, a From/To currency selection, a Convert button and a result label.
+Task 5.1 – Four Implementations | 3 Marks
+Implement the Convert action in four ways: (a) the frame itself implements ActionListener, (b) a named inner class, (c) an anonymous inner class, (d) a lambda expression. Also handle window closing using a WindowAdapter.
+Task 5.2 – Change the Requirement | 2 Marks
+The converter must now also convert when the user presses Enter in the amount field and must show the result in a dialog box. Modify each version and record how much code had to change in each.
+Task 5.3 – Compare the Styles | 2 Marks
+Compare the four styles on readability, access to the frame’s fields, reuse of the handler and ease of change. State which style you would use for a large application and why.
+Complete the Code
+Complete TODO 1 and TODO 2 below. This is the lambda version (style d). Execute it and attach screenshots of a valid conversion and an invalid amount.
+import java.awt.FlowLayout;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+public class Converter extends JFrame {
+    private final JTextField amount = new JTextField(10);
+    private final JComboBox<String> target =
+            new JComboBox<>(new String[]{"USD", "EUR"});
+    private final JLabel result = new JLabel(" ");
+    private static double rate(String currency) {
+        return currency.equals("USD") ? 0.012 : 0.011;
+    }
+    public Converter() {
+        super("Currency Converter");
+        setLayout(new FlowLayout());
+        JButton convertButton = new JButton("Convert");
+        add(new JLabel("INR")); add(amount); add(target);
+        add(convertButton); add(result);
+        // TODO 1: Register ONE lambda listener for both the Convert button and the
+        //   Enter key in the amount field
+        
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        pack();
+    }
+    private void convert() {
+        // TODO 2: Parse the amount and show the converted value with 2 decimals, or
+        //   "Invalid amount" if parsing fails
+        
+    }
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new Converter().setVisible(true));
+    }
+}
+Alternative Concept and Complexity Analysis
+If the Convert action were written as a method reference (this::convert) or as one shared Action object used by the button, a menu item and a keyboard shortcut, what would the solution be? Compare the number of listener objects created (space) and the work needed to add a new trigger, with the four styles you implemented.
+Evidence Expected
+Four working implementations, evidence of the change effort and a reasoned comparison.
+TASK 6 – DESIGN CHALLENGE
+Bloom’s Level: K5 – Evaluate
+Campus Event Registration Desktop Application
+13 Marks
+The cultural committee needs a desktop application to manage event registrations. Students register for events through a form; the committee views all registrations in a table, filters them by event and exports the list. The data is stored in a MySQL database. The application must remain responsive while data is loading, must reject invalid input clearly, and must not allow a student to register twice for the same event.
+You are not given the design.
+Stage 1 – Interpret the Problem | 2 Marks
+Identify the users, the screens, the data and the rules. State the requirements as testable statements.
+Stage 2 – Propose the Screen and Event Flow | 2 Marks
+Sketch each screen, including a menu bar (MenuBar/JMenuBar), and draw the flow between screens and dialogs.
+Stage 3 – Identify the Critical Design Decisions | 2 Marks
+Identify where input validation, duplicate checking and database access occur, and how long-running database work is kept off the event-dispatch thread.
+Stage 4 – Design the Classes and Handlers | 4 Marks
+Present a class diagram separating the user interface, service and data-access (JDBC) layers, and pseudocode for the Register and Filter actions.
+Stage 5 – Implement and Demonstrate | 3 Marks
+Implement the application using Swing (JFrame, JPanel, JTextField, JComboBox, JTable, JMenuBar) with JDBC, and demonstrate normal, invalid and duplicate registrations.
+Alternative Concept and Complexity Analysis
+If all registrations were loaded into the JTable at once, instead of loading one page at a time using SQL LIMIT and OFFSET in a SwingWorker, what would the solution be? Analyse the loading time and the memory used for 100,000 registrations, and the effect on the responsiveness of the window, in both approaches.
+Evidence Expected
+A complete, layered GUI design with screen flow, handler pseudocode, a working Swing–JDBC application and demonstrated test cases.
+MARK DISTRIBUTION
+Task
+Competency Assessed
+Bloom’s Level
+Marks
+Task 1
+Diagnose and repair a poor event-handling design
+K4 – Analyse
+6
+Task 2
+Design an event-driven interface from a requirement
+K4 – Analyse
+8
+Task 3
+Design and implement layouts
+K4 – Analyse
+9
+Task 4
+Debug event handling using failing interactions
+K4 – Analyse
+7
+Task 5
+Compare event-handling styles under changing requirements
+K5 – Evaluate
+7
+Task 6
+Independently design and build a layered GUI–JDBC application
+K5 – Evaluate
+13
+TOTAL
+50
+Submission Requirements
+GitHub repository link (mandatory) containing the executed code for every task, including every completed “Complete the Code” program, with input files, output screenshots and a README.md.
+Report containing diagnoses, tables, diagrams, pseudocode and comparisons
+Java source code for Tasks 1.2, 3, 4, 5 and 6
+Screenshots showing each tested interaction
+SQL script for Task 6
+A screenshot of a window alone is not sufficient evidence; each screenshot must be linked to the requirement or test it demonstrates.
+Assessment Verification
+Students may be asked to explain any part of their design or code, trace an event through their handlers, or modify a handler during a brief verification discussion/viva.
