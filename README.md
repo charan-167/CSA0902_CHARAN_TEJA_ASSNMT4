@@ -6,7 +6,7 @@
 
 **Course Name:** Java Programming
 
-**Course Code:** CSA0901
+**Course Code:** CSA0902
 
 ---
 
