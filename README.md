@@ -1,8 +1,8 @@
 # STUDENT DETAILS
 
-**Name:** YAZHINI.E.M
+**Name:** K V CHARAN TEJA
 
-**Register Number:** 192511165
+**Register Number:** 192424167
 
 **Course Name:** Java Programming
 
